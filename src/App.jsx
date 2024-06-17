@@ -40,7 +40,7 @@ const data = {
             link: "https://www.google.com/",
             image: 'https://mooseframework.inl.gov/virtual_test_bed/media/sfr_minicore/core_plate_mesh.png', 
             description: 'This VTB model provides an example representative of a Sodium cooled Fast Reactor (SFR) using metallic fuel. Reactor core analyses of SFR require the modeling of multiple physics systems',
-            key_vals: { keyheat: "valheat;valheat3;Val4", key: "val", key1: "eval" },
+            key_vals: { keyheat: "valheat;valheat3;Val4;valheat3;Val4", key: "val", key1: "eval" },
         },
         {
             name: "MoosePage3",
@@ -83,13 +83,18 @@ function App() {
     const menu_data_arrays = {};
     for (const row of data.data) {
         for (const key in row.key_vals) {
+            // Create category if encountering a new one
             if (!menu_data_arrays[key]) {
                 menu_data_arrays[key] = new Array();
             }
 
-            menu_data_arrays[key].push(row.key_vals[key]);
-        }
+      // Create new keys from the entries in the dictionary
+      // ; is the separator, so we create multiple entries if we find it
+      for (const new_key in row.key_vals[key].toString().split(";")) {
+        menu_data_arrays[key].push(row.key_vals[key].split(";")[new_key]);
+      }
     }
+  }
 
     // Sort each category alphabetically
     for (const key in menu_data_arrays) {
@@ -157,19 +162,25 @@ function App() {
                                 return false;
                             }
 
-                            // Keep track of which data entries (row) matched the key/value of the user-selected checked_keyes
-                            for (const checked_key of checked_keys) {
-                                const [checked_key_name, checked_key_value] = checked_key.split(":");
+              // Keep track of which data entries (row) matched the key/value of the user-selected checked_keys
+              for (const checked_key of checked_keys) {
+                const [checked_key_name, checked_key_value] =
+                  checked_key.split(":");
 
-                                if (row.key_vals[checked_key_name] == checked_key_value) {
-                                    found_keys[checked_key_name] = true;
-                                }
-                            }
+                // A given key/value pair (row.key_vals) in the input dictionary can contain multiple
+                // values. If the checked value is one of these values, we display this dictionary entry
+                if (checked_key_name in row.key_vals)
+                {
+                  if (row.key_vals[checked_key_name].toString().includes(checked_key_value))
+                    found_keys[checked_key_name] = true;
+                }
+              }
 
-                            // If any of the of the keys were not in the data entry with the right value
-                            // then exclude the data entry. For that key, it did not have the right value.
-                            for (const checked_key of checked_keys) {
-                                const [checked_key_name, checked_key_value] = checked_key.split(":");
+              // If any of the keys were not in the data entry with the right value
+              // then exclude the data entry. For that key, it did not have the right value.
+              for (const checked_key of checked_keys) {
+                const [checked_key_name, checked_key_value] =
+                  checked_key.split(":");
 
                                 if (!found_keys[checked_key_name]) { 
                                     return false; 
