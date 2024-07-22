@@ -1,17 +1,15 @@
 import React from "react";
 import { useState } from "react";
 import "./App.css";
+
+import CssBaseline from "@mui/material/CssBaseline";
 import {
     AppBar,
     Box,
     Checkbox,
-    CssBaseline,
     Drawer,
     FormControlLabel, ListItemText, Divider, ListSubheader, FormControl,
-    ListItemIcon,
-    FormGroup,
-    Link,
-    List,
+    ListItemIcon, FormGroup, Link, List, TextField,
     ListItem,
     Toolbar,
     Typography, Card, CardHeader, CardMedia, CardContent, Avatar, CardActions, Button
@@ -20,6 +18,7 @@ import { blue } from '@mui/material/colors';
 import defaultImage from './assets/default-image.avif';
 
 import Grid from '@mui/material/Unstable_Grid2';
+import Search from './Search';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -78,6 +77,7 @@ const drawerWidth = 240;
 function App() {
 
     const [checked_keys, setCheckedKeys] = useState(new Set());
+    const [search, setSearch] = useState();
 
     // Build the datastructure for the menu
     const menu_data_arrays = {};
@@ -125,40 +125,59 @@ function App() {
             <CssBaseline />
             <AppBar
                 position="fixed"
-                sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
+                sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
             >
                 <Toolbar>
-                    <Typography variant="h6" noWrap component="div">
+                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
                         Select Tags
-                    </Typography>
+                    </Typography>                    
+                    <Search value={search} onChange={(e) => { setSearch(e.target.value); }} />
                 </Toolbar>
             </AppBar>
             <Drawer
                 sx={{
                     width: drawerWidth,
                     flexShrink: 0,
-                    "& .MuiDrawer-paper": {
-                        width: drawerWidth,
-                        boxSizing: "border-box",
-                    },
+                    [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
                 }}
                 variant="permanent"
                 anchor="left"
+            
             >
+                <Toolbar />
 
-                {Object.keys(menu_data).map((key) => {
-                    return <SectionBlock checkedItems={checked_keys} key={key} sectionTitle={key} items={menu_data[key]} data={data.data} handleCheck={handleCheck} />;
-                })}
+                <Box sx={{ overflow: 'auto' }}>
 
-            </Drawer>
+                    {Object.keys(menu_data).map((key) => {
+                        return <SectionBlock checkedItems={checked_keys} key={key} sectionTitle={key} items={menu_data[key]} data={data.data} handleCheck={handleCheck} />;
+                    })}
+
+                </Box>
+
+            </Drawer>            
+
             <Box component="main" sx={{ flexGrow: 1, bgcolor: "white", p: 3, mt: 4 }}>
                 <Grid container spacing={2}>
                     {data.data
                         .filter((row) => {
+
+                            let matchedSearchText = false;
+
+                            // Search text checks 
+                            if (search) {
+                                if (row.name.toLowerCase().includes(search.toLowerCase())
+                                    || row.description.toLowerCase().includes(search.toLowerCase())) {
+                                    matchedSearchText = true;
+                                }
+                            } else {
+                                // No search term used to filter, so assume a match
+                                matchedSearchText = true;
+                            }
+
                             let found_keys = {};
 
                             // Avoid displaying all results when opening the page
-                            if (checked_keys.size == 0) {
+                            if (checked_keys.size == 0 && !search) {
                                 return false;
                             }
 
@@ -186,7 +205,7 @@ function App() {
                                 }
                             }
 
-                            return true;
+                            return true && matchedSearchText;
                         })
 
                         .map((row) => (
@@ -220,7 +239,7 @@ const SectionBlock = ({ sectionTitle, items, handleCheck, checkedItems, data }) 
     let title = sectionTitle.replaceAll('_', ' ');
     const menuData = data;
 
-    console.log("Found menuData", sectionTitle, menuData, {items});
+    //console.log("Found menuData", sectionTitle, menuData, {items});
 
     return <><List sx={{ textAlign: 'left' }} dense={true}
         subheader={
@@ -297,7 +316,7 @@ const OverflowButton = ({title, onClick}) => {
     return <ListItem disablePadding disableGutters dense={true} sx={{ pl: '16px', height: '35px', color: 'rgb(54,65,82)' }} onClick={onClick} >
         <ListItemText dense disableTypography style={{ textTransform: 'capitalize' }}>
             <FormControl margin='none' size='small' fullWidth>
-                <FormControlLabel control={<span>&nbsp;&nbsp;&nbsp;</span>} label={title} componentsProps={{ typography: { variant: 'caption' } }} />
+                <FormControlLabel control={<span>&nbsp;&nbsp;&nbsp;</span>} label={title} componentsProps={{ typography: { variant: 'overline', color:'blue' } }} />
             </FormControl>
         </ListItemText>
     </ListItem>;
