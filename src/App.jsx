@@ -69,6 +69,34 @@ const data = {
             description: 'This VTB model provides an example representative of a Sodium cooled Fast Reactor (SFR) using metallic fuel. Reactor core analyses of SFR require the modeling of multiple physics systems',
             key_vals: { key1: "dval", keya: "val;m1;m2;m3;m4;m5;m6;m7;m8", keychem: "kc", thing1: "thing2" },
         },
+        {
+            name: "MoosePage7",
+            path: "moose/modules/doc/content/index2.md",
+            image: 'https://mooseframework.inl.gov/virtual_test_bed/media/sfr_minicore/core_plate_mesh.png',
+            description: 'This VTB model provides an example representative of a Sodium cooled Fast Reactor (SFR) using metallic fuel. Reactor core analyses of SFR require the modeling of multiple physics systems',
+            key_vals: { key1: "dval", keya: "val;m1;m2;m3;m4;m5;m6;m7;m8", keychem: "kc", thing1: "thing2" },
+        },
+        {
+            name: "MoosePage8",
+            path: "moose/modules/doc/content/index2.md",
+            image: 'https://mooseframework.inl.gov/virtual_test_bed/media/sfr_minicore/core_plate_mesh.png',
+            description: 'This VTB model provides an example representative of a Sodium cooled Fast Reactor (SFR) using metallic fuel. Reactor core analyses of SFR require the modeling of multiple physics systems',
+            key_vals: { key1: "dval", keya: "val;m1;m2;m3;m4;m5;m6;m7;m8", keychem: "kc", thing1: "thing2" },
+        },
+        {
+            name: "MoosePage9",
+            path: "moose/modules/doc/content/index2.md",
+            image: 'https://mooseframework.inl.gov/virtual_test_bed/media/sfr_minicore/core_plate_mesh.png',
+            description: 'This VTB model provides an example representative of a Sodium cooled Fast Reactor (SFR) using metallic fuel. Reactor core analyses of SFR require the modeling of multiple physics systems',
+            key_vals: { key1: "dval", keya: "val;m1;m2;m3;m4;m5;m6;m7;m8", keychem: "kc", thing1: "thing2" },
+        },
+        {
+            name: "MoosePage10",
+            path: "moose/modules/doc/content/index2.md",
+            image: 'https://mooseframework.inl.gov/virtual_test_bed/media/sfr_minicore/core_plate_mesh.png',
+            description: 'This VTB model provides an example representative of a Sodium cooled Fast Reactor (SFR) using metallic fuel. Reactor core analyses of SFR require the modeling of multiple physics systems',
+            key_vals: { key1: "dval", keya: "val;m1;m2;m3;m4;m5;m6;m7;m8", keychem: "kc", thing1: "thing2" },
+        },
     ],
 };
 
